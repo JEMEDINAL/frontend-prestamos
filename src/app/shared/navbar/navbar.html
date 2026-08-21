@@ -1,0 +1,29 @@
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
+  <div class="container">
+    <!-- Logo o Título -->
+    <a class="navbar-brand fw-bold fs-4 text-primary" href="#">
+      <i class="bi bi-bank me-2"></i>PrestamosYa
+    </a>
+
+    <!-- Botón para móviles -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Botones de la Navbar según el estado -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="d-flex gap-2">
+        @if (!isLoggedIn) {
+          <!-- Botones cuando NO está logueado -->
+          <button class="btn btn-outline-light rounded-pill px-4" type="button">Iniciar Sesión</button>
+          <button class="btn btn-primary rounded-pill px-4" type="button">Registrarse</button>
+        } @else {
+          <!-- Botón cuando SÍ está logueado -->
+          <button class="btn btn-danger rounded-pill px-4" type="button" (click)="isLoggedIn = false">Cerrar Sesión</button>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

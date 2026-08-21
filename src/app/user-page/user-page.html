@@ -1,0 +1,78 @@
+<main class="container my-5">
+  
+  @if (!isLoggedIn) {
+    <!-- VISTA: USUARIO NO LOGUEADO (Sección de Bienvenida / Hero) -->
+    <div class="row align-items-center g-5 py-5">
+      <div class="col-lg-6 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Simula tu préstamo en minutos y sin papeleo</h1>
+        <p class="lead text-muted">Obtén el dinero que necesitas con las tasas más bajas del mercado. Seguro, rápido y 100% digital. Únete hoy mismo a miles de clientes satisfechos.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 rounded-pill shadow" (click)="isLoggedIn = true">Probar simulador ahora</button>
+        </div>
+      </div>
+      <div class="col-10 col-sm-8 col-lg-6 mx-auto">
+        <!-- Imagen de adorno o tarjeta de presentación -->
+        <div class="p-5 bg-light border rounded-5 text-center shadow-sm">
+          <h3 class="fw-bold mb-3 text-secondary">¿Por qué elegirnos?</h3>
+          <ul class="list-unstyled text-start mx-auto " style="max-width: 300px;">
+            <li class="mb-2">✅ Aprobación inmediata</li>
+            <li class="mb-2">✅ Sin comisiones ocultas</li>
+            <li class="mb-2">✅ Plazos flexibles de pago</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <!-- VISTA: USUARIO LOGUEADO (Dashboard de Préstamos) -->
+    <div class="row">
+      <div class="col-12 mb-4">
+        <h2 class="fw-bold">¡Bienvenido de nuevo, <span class="text-primary">{{ username }}</span>! 👋</h2>
+        <p class="text-muted">Aquí tienes el estado actual de tus solicitudes y préstamos activos.</p>
+      </div>
+    </div>
+
+    <!-- Sección de Tarjetas -->
+    <div class="row g-4">
+      
+      <!-- ESTA ES LA TARJETA INDIVIDUAL (Lista para tu @for) -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+          <!-- Decoración superior de la tarjeta -->
+          <div class="bg-primary p-2"></div>
+          
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted small fw-medium">ID Préstamo: #1024</span>
+              <!-- Estado del préstamo (badge moderno) -->
+              <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">Aprobado</span>
+              <!-- Nota: Si cambia el estado, puedes usar bg-warning-subtle (Pendiente) o bg-danger-subtle (Rechazado) -->
+            </div>
+            
+            <h6 class="card-subtitle mb-1 text-muted text-uppercase tracking-wider small">Monto Solicitado</h6>
+            <h3 class="card-title fw-bold text-dark mb-4">$5,000.00 <span class="fs-6 text-muted fw-normal">USD</span></h3>
+            
+            <div class="border-top pt-3">
+              <div class="row text-center">
+                <div class="col-6 border-end">
+                  <span class="text-muted d-block small">Plazo</span>
+                  <span class="fw-semibold">12 Meses</span>
+                </div>
+                <div class="col-6">
+                  <span class="text-muted d-block small">Cuota Mensual</span>
+                  <span class="fw-semibold text-primary">$450.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-footer bg-light border-0 p-3 text-center">
+            <a href="#" class="btn btn-link text-decoration-none p-0 fw-medium">Ver detalles del plan de pagos →</a>
+          </div>
+        </div>
+      </div>
+      <!-- FIN DE LA TARJETA -->
+
+    </div>
+  }
+
+</main>
