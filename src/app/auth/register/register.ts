@@ -1,11 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from "@angular/router";
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
-  imports: [],
+  imports: [RouterLink,ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
+  registerForm = new FormGroup({
+    email: new FormControl('', { 
+      nonNullable: true, 
+      validators: [Validators.required, Validators.email] 
+    }),
+    password: new FormControl('', { 
+      nonNullable: true, 
+      validators: [Validators.required] 
+    })
+  });
+  
+  
+    registerData() {
+      if (this.registerForm.invalid) {
+    this.registerForm.markAllAsTouched();
+    return;
+  }
+
+  const data = this.registerForm.getRawValue();
+
+  this.authService.register(data).subscribe({
+    next: response => {
+
+      console.log('Registro correcto');
+
+      this.router.navigate(['/user-page']);
+
+    },
+    error: error => {
+
+      console.error('Error register:', error);
+
+    }
+  });
+    }
 
 }

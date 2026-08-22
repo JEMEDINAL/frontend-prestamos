@@ -15,13 +15,13 @@
     <!-- Botones de la Navbar según el estado -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <div class="d-flex gap-2">
-        @if (!isLoggedIn) {
+        @if (!isLoggedIn()) {
           <!-- Botones cuando NO está logueado -->
-          <button class="btn btn-outline-light rounded-pill px-4" type="button">Iniciar Sesión</button>
-          <button class="btn btn-primary rounded-pill px-4" type="button">Registrarse</button>
+          <button class="btn btn-outline-light rounded-pill px-4" routerLink="login" type="button">Iniciar Sesión</button>
+          <button class="btn btn-primary rounded-pill px-4"  routerLink="register" type="button">Registrarse</button>
         } @else {
           <!-- Botón cuando SÍ está logueado -->
-          <button class="btn btn-danger rounded-pill px-4" type="button" (click)="isLoggedIn = false">Cerrar Sesión</button>
+          <button class="btn btn-danger rounded-pill px-4" type="button" (click)="logout()">Cerrar Sesión</button>
         }
       </div>
     </div>

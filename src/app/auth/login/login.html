@@ -1,1 +1,19 @@
-<p>login works!</p>
+<div class="card shadow-sm border-0 rounded-4 p-4">
+  <h4 class="fw-bold text-center mb-4">Iniciar Sesión</h4>
+  <form [formGroup]="loginForm" (ngSubmit)="sendData()">
+    <div class="mb-3">
+      <label for="loginEmail" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="loginEmail" formControlName="email" placeholder="tu@email.com">
+    </div>
+    <div class="mb-3">
+      <label for="loginPassword" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="loginPassword" formControlName="password" placeholder="••••••••">
+    </div>
+    
+    <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="loginForm.invalid">Ingresar</button>
+</form>
+  <div class="text-center mt-3">
+    <span class="text-muted">¿No tienes cuenta? </span>
+    <a routerLink="/register" class="text-decoration-none">Regístrate aquí</a>
+  </div>
+</div>

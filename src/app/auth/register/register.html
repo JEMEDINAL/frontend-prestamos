@@ -1,1 +1,18 @@
-<p>register works!</p>
+<div class="card shadow-sm border-0 rounded-4 p-4">
+  <h4 class="fw-bold text-center mb-4">Crear Cuenta</h4>
+  <form [formGroup]="registerForm" (ngSubmit)="registerData()">
+    <div class="mb-3">
+      <label for="registerEmail" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="registerEmail"  formControlName="email" placeholder="tu@email.com" required>
+    </div>
+    <div class="mb-3">
+      <label for="registerPassword" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="registerPassword"  formControlName="password" placeholder="Mínimo 6 caracteres" required>
+    </div>
+    <button type="submit" class="btn btn-success w-100 py-2" [disabled]="registerForm.invalid">Registrarme</button>
+  </form>
+  <div class="text-center mt-3">
+    <span class="text-muted">¿Ya tienes cuenta? </span>
+    <a routerLink="/login" class="text-decoration-none" >Inicia sesión aquí</a>
+  </div>
+</div>

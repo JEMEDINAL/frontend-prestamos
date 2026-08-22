@@ -1,78 +1,147 @@
 <main class="container my-5">
-  
-  @if (!isLoggedIn) {
-    <!-- VISTA: USUARIO NO LOGUEADO (Sección de Bienvenida / Hero) -->
-    <div class="row align-items-center g-5 py-5">
-      <div class="col-lg-6 text-center text-lg-start">
-        <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Simula tu préstamo en minutos y sin papeleo</h1>
-        <p class="lead text-muted">Obtén el dinero que necesitas con las tasas más bajas del mercado. Seguro, rápido y 100% digital. Únete hoy mismo a miles de clientes satisfechos.</p>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 rounded-pill shadow" (click)="isLoggedIn = true">Probar simulador ahora</button>
-        </div>
-      </div>
-      <div class="col-10 col-sm-8 col-lg-6 mx-auto">
-        <!-- Imagen de adorno o tarjeta de presentación -->
-        <div class="p-5 bg-light border rounded-5 text-center shadow-sm">
-          <h3 class="fw-bold mb-3 text-secondary">¿Por qué elegirnos?</h3>
-          <ul class="list-unstyled text-start mx-auto " style="max-width: 300px;">
-            <li class="mb-2">✅ Aprobación inmediata</li>
-            <li class="mb-2">✅ Sin comisiones ocultas</li>
-            <li class="mb-2">✅ Plazos flexibles de pago</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  } @else {
-    <!-- VISTA: USUARIO LOGUEADO (Dashboard de Préstamos) -->
-    <div class="row">
-      <div class="col-12 mb-4">
-        <h2 class="fw-bold">¡Bienvenido de nuevo, <span class="text-primary">{{ username }}</span>! 👋</h2>
-        <p class="text-muted">Aquí tienes el estado actual de tus solicitudes y préstamos activos.</p>
-      </div>
-    </div>
 
-    <!-- Sección de Tarjetas -->
-    <div class="row g-4">
-      
-      <!-- ESTA ES LA TARJETA INDIVIDUAL (Lista para tu @for) -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-          <!-- Decoración superior de la tarjeta -->
-          <div class="bg-primary p-2"></div>
-          
-          <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-muted small fw-medium">ID Préstamo: #1024</span>
-              <!-- Estado del préstamo (badge moderno) -->
-              <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">Aprobado</span>
-              <!-- Nota: Si cambia el estado, puedes usar bg-warning-subtle (Pendiente) o bg-danger-subtle (Rechazado) -->
-            </div>
-            
-            <h6 class="card-subtitle mb-1 text-muted text-uppercase tracking-wider small">Monto Solicitado</h6>
-            <h3 class="card-title fw-bold text-dark mb-4">$5,000.00 <span class="fs-6 text-muted fw-normal">USD</span></h3>
-            
-            <div class="border-top pt-3">
-              <div class="row text-center">
-                <div class="col-6 border-end">
-                  <span class="text-muted d-block small">Plazo</span>
-                  <span class="fw-semibold">12 Meses</span>
-                </div>
-                <div class="col-6">
-                  <span class="text-muted d-block small">Cuota Mensual</span>
-                  <span class="fw-semibold text-primary">$450.00</span>
-                </div>
+  @if (!isLoggedIn()) {
+  <!-- VISTA: USUARIO NO LOGUEADO (Sección de Bienvenida / Hero) -->
+  <div class="row align-items-center g-5 py-5">
+    <div class="col-lg-6 text-center text-lg-start">
+      <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Pide tu préstamo en minutos y sin papeleo</h1>
+      <p class="lead text-muted">Obtén el dinero que necesitas con las tasas más bajas del mercado. Seguro, rápido y
+        100% digital. Únete hoy mismo a miles de clientes satisfechos.</p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 rounded-pill shadow" routerLink="login">Probar
+          ahora</button>
+      </div>
+    </div>
+    <div class="col-10 col-sm-8 col-lg-6 mx-auto">
+      <!-- Imagen de adorno o tarjeta de presentación -->
+      <div class="p-5 bg-light border rounded-5 text-center shadow-sm">
+        <h3 class="fw-bold mb-3 text-secondary">¿Por qué elegirnos?</h3>
+        <ul class="list-unstyled text-start mx-auto " style="max-width: 300px;">
+          <li class="mb-2">✅ Aprobación inmediata</li>
+          <li class="mb-2">✅ Sin comisiones ocultas</li>
+          <li class="mb-2">✅ Plazos flexibles de pago</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <!-- VISTA: USUARIO LOGUEADO (Dashboard de Préstamos) -->
+  <div class="row">
+    <div class="col-12 mb-4">
+      <h2 class="fw-bold">¡Bienvenido de nuevo a, <span class="text-primary">PrestamosYa</span>! 👋</h2>
+      <p class="text-muted">Aquí tienes el estado actual de tus solicitudes y préstamos activos.</p>
+
+      <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#loanModal">
+        Crear Nuevo Prestamo
+      </button>
+    </div>
+  </div>
+
+  <!-- Sección de Tarjetas -->
+  <div class="row g-4">
+    @if (loans().length > 0){
+    @for (loan of loans(); track loan.id){
+    <!-- ESTA ES LA TARJETA INDIVIDUAL (Lista para tu @for) -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+        <!-- Decoración superior de la tarjeta -->
+        <div class="bg-primary p-2"></div>
+
+        <div class="card-body p-4 ">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted small fw-medium">ID Préstamo: #{{ loan.id }}</span>
+            <!-- Estado del préstamo (badge moderno) -->
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">{{
+              loan.status }}</span>
+            <!-- Nota: Si cambia el estado, puedes usar bg-warning-subtle (Pendiente) o bg-danger-subtle (Rechazado) -->
+          </div>
+
+          <h6 class="card-subtitle mb-1 text-muted text-uppercase tracking-wider small">Monto Solicitado</h6>
+          <h3 class="card-title fw-bold text-dark mb-4">{{ loan.monto }} <span
+              class="fs-6 text-muted fw-normal">USD</span></h3>
+
+          <div class="border-top pt-3">
+            <div class="row text-center">
+              <div class="col-6 border-end">
+                <span class="text-muted d-block small">Plazo</span>
+                <span class="fw-semibold">{{ loan.plazo }} Meses</span>
+              </div>
+              <div class="col-6">
+                <span class="text-muted d-block small">Cuota Mensual</span>
+                <span class="fw-semibold text-primary">{{ (loan.monto / loan.plazo) | number:'1.2-2' }}</span>
               </div>
             </div>
           </div>
-          
-          <div class="card-footer bg-light border-0 p-3 text-center">
-            <a href="#" class="btn btn-link text-decoration-none p-0 fw-medium">Ver detalles del plan de pagos →</a>
-          </div>
+        </div>
+
+        <div class="card-footer bg-light border-0 p-3 text-center">
+          <a href="#" class="btn btn-link text-decoration-none p-0 fw-medium">Espere Una Autorizacion del
+            Administrador</a>
         </div>
       </div>
-      <!-- FIN DE LA TARJETA -->
+    </div>
+    <!-- FIN DE LA TARJETA -->
+    }
+    }@else {
+
+    <div class="alert alert-info">
+      No tienes ningún préstamo registrado en este momento.
+    </div>
+    }
+
+  </div>
+  }
+
+
+  <div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="loanModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      
+      <!-- Encabezado de la Modal -->
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-dark" id="loanModalLabel">Solicitar Prestamo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Formulario Reactivo Angular integrado -->
+      <form [formGroup]="requestLoan" (ngSubmit)="sendData()">
+        
+        <!-- 🌟 BOTÓN OCULTO AGREGADO AQUÍ PARA CERRAR LA MODAL DESDE ANGULAR 🌟 -->
+        <button type="button" #closeModalButton data-bs-dismiss="modal" class="d-none"></button>
+
+        <!-- Cuerpo de la Modal -->
+        <div class="modal-body p-4">
+          <!-- Campo: Monto (Amount) -->
+          <div class="mb-3">
+            <label for="amountInput" class="form-label small fw-medium text-muted">Monto Solicitado (USD)</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" id="amountInput" class="form-control" formControlName="amount">
+              <div class="invalid-feedback">El monto es obligatorio y debe ser mayor a 0.</div>
+            </div>
+          </div>
+
+          <!-- Campo: Plazo -->
+          <div class="mb-3">
+            <label for="plazoInput" class="form-label small fw-medium text-muted">Plazo (Meses)</label>
+            <input type="number" id="plazoInput" class="form-control" formControlName="plazo">
+            <div class="invalid-feedback">El plazo es obligatorio y debe ser mínimo 1 mes.</div>
+          </div>
+        </div>
+
+        <!-- Pie de la Modal (Acciones) -->
+        <div class="modal-footer bg-light border-top-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success px-4" [disabled]="requestLoan.invalid">
+            Crear Prestamo
+          </button>
+        </div>
+
+      </form>
 
     </div>
-  }
+  </div>
+</div>
+
 
 </main>
