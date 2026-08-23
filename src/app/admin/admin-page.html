@@ -1,0 +1,69 @@
+<div class="container mt-4">
+    <h2 class="mb-4 text-black text-center fw-bold">Préstamos por Evaluar</h2>
+    <div class="row g-4 align-items-start">
+        @for (usuario of loansToEvaluate(); track usuario.id) {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle fs-4"></i>
+                        <h6 class="card-title mb-0 fw-semibold text-truncate" style="max-width: 180px;">
+                            {{ usuario.email }}
+                        </h6>
+                    </div>
+                    <span class="badge bg-secondary">ID: {{ usuario.id }}</span>
+                </div>
+                <div class="card-body bg-light">
+                    @for (prestamo of usuario.prestamos; track prestamo.id) {
+                    <div class="p-3 mb-3 bg-white rounded border border-secondary-subtle">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small fw-medium">Monto Solicitado:</span>
+                            <span class="fs-5 fw-bold text-success">${{ prestamo.monto }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small fw-medium">Plazo:</span>
+                            <span class="badge bg-info text-dark fw-semibold">{{ prestamo.plazo }} meses</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted small fw-medium">Estado:</span>
+                            <span class="badge fw-bold" [ngClass]="{
+                                'bg-primary text-white': prestamo.status === 'PENDIENTE',
+                                'bg-success text-white': prestamo.status === 'APROBADO',
+                                'bg-danger text-white': prestamo.status === 'RECHAZADO'
+                                }">
+                                {{ prestamo.status }}
+                            </span>
+                        </div>
+
+                        @if (prestamo.status === 'PENDIENTE') {
+                        <div class="d-flex gap-2 mt-3">
+                            <button (click)="changeStatus(prestamo.id,'APROBADO')"
+                                class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-1 fw-semibold py-2">
+                                Aprobar
+                            </button>
+
+                            <button (click)="changeStatus(prestamo.id,'RECHAZADO')"
+                                class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-1 fw-semibold py-2">
+                                Rechazar
+                            </button>
+                        </div>
+                        } @else {
+                        <div class="text-center mt-3 text-muted small fw-medium">
+                            Este préstamo ya fue evaluado
+                        </div>
+                        }
+
+                    </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <div class="col-12 text-center my-5">
+            <h4 class="text-muted fw-light">No hay solicitudes de préstamos en este momento.</h4>
+        </div>
+        }
+    </div>
+</div>

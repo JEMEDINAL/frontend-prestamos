@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from '../auth.service';
+import { AlertService } from '../../shared/alerts/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { AuthService } from '../auth.service';
 export class Register {
   private router = inject(Router);
   private authService = inject(AuthService);
+  private alertService = inject(AlertService);
 
   registerForm = new FormGroup({
     email: new FormControl('', { 
@@ -24,29 +26,22 @@ export class Register {
     })
   });
   
-  
     registerData() {
       if (this.registerForm.invalid) {
     this.registerForm.markAllAsTouched();
     return;
   }
-
   const data = this.registerForm.getRawValue();
-
   this.authService.register(data).subscribe({
     next: response => {
 
-      console.log('Registro correcto');
-
+      this.alertService.showAlert(response.message,200);
       this.router.navigate(['/user-page']);
 
     },
     error: error => {
-
-      console.error('Error register:', error);
-
+      this.alertService.showAlert(error.error.message,400);
     }
   });
     }
-
 }

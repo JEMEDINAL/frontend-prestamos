@@ -1,0 +1,21 @@
+@if (alertService.alert(); as config) {
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 2000;">
+    <div class="alert alert-dismissible fade show shadow border-0 text-white rounded-3 animate-fade-in"
+         [class.bg-success]="config.type === 'success'"
+         [class.bg-danger]="config.type === 'danger'"
+         role="alert">
+
+      <div class="d-flex align-items-center gap-2 pr-4">
+        @if (config.type === 'success') { <i class="bi bi-check-circle-fill fs-5"></i> }
+        @if (config.type === 'danger') { <i class="bi bi-exclamation-triangle-fill fs-5"></i> }
+        
+        <span class="fw-medium">{{ config.message }}</span>
+      </div>
+      <button (click)="alertService.closeAlert()" 
+              type="button" 
+              class="btn-close btn-close-white" 
+              aria-label="Close">
+      </button>
+    </div>
+  </div>
+}

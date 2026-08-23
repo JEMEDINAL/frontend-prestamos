@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from '../auth.service';
+import { AlertService } from '../../shared/alerts/alert.service';
 
 
 @Component({
@@ -13,31 +14,35 @@ import { AuthService } from '../auth.service';
 export class Login {
   private router = inject(Router);
   private authService = inject(AuthService);
+  private alertService = inject(AlertService);
 
   loginForm = new FormGroup({
-    email: new FormControl('', { 
-      nonNullable: true, 
-      validators: [Validators.required, Validators.email] 
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email]
     }),
-    password: new FormControl('', { 
-      nonNullable: true, 
-      validators: [Validators.required] 
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required]
     })
   });
-
 
   sendData() {
     const data = this.loginForm.getRawValue();
     this.authService.login(data).subscribe({
-      next: response =>{
-        this.router.navigate(['/user-page']);
+      next: response => {
+        this.alertService.showAlert(response.message,200);
+        if (this.authService.isAdmin()) {
+          
+          this.router.navigate(['/admin']);
+        } else {
+          
+          this.router.navigate(['/user-page']);
+        }
       },
-      error: error =>{
-          console.log('error = ',error.error.message)
+      error: error => {
+        this.alertService.showAlert(error.error.message,400);
       }
-
     })
-    
   }
-
 }

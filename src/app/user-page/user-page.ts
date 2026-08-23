@@ -1,9 +1,10 @@
 import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { MyLoans } from '../auth/auth.models';
 import { DecimalPipe } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AlertService } from '../shared/alerts/alert.service';
 
 @Component({
   selector: 'app-user-page',
@@ -12,8 +13,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './user-page.css',
 })
 export class UserPage {
-  private router = inject(Router);
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
+  private alertService = inject(AlertService);
   isLoggedIn = this.authService.isAuthenticated;
   loans = signal<MyLoans[]>([]);
   private closeModalBtn = viewChild<ElementRef<HTMLButtonElement>>('closeModalButton');
@@ -48,7 +49,7 @@ export class UserPage {
     const data = this.requestLoan.getRawValue();
     this.authService.newLoan(data).subscribe({
       next: response => {
-        console.log('response del backend = ' + response.message);
+        this.alertService.showAlert(response.message,201);
         this.loadLoans();
         this.requestLoan.reset();
         const backdrop = document.querySelector('.modal-backdrop');
@@ -56,11 +57,7 @@ export class UserPage {
 
       },
       error: error => {
-        if (error.error && error.error.message) {
-          console.log('Error personalizado del backend = ', error.error.message);
-        } else {
-          console.log('Error de red o genérico = ', error.message);
-        }
+        this.alertService.showAlert(error.error.message,400);
       }
     })
   }

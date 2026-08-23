@@ -7,12 +7,14 @@ import {
   RegisterDto,
   AuthResponse,
   MyLoans,
-  NewLoan,ApiResponse
+  NewLoan,
+  ApiResponse,
+  UsuarioPrestamos
 } from './auth.models';
 
 interface JwtPayload {
   sub: string;
-  role: string;
+  rol: string[];
   exp: number;
 }
 
@@ -71,6 +73,16 @@ export class AuthService {
     return this.http.post<ApiResponse>('http://localhost:8080/prestamos',data)
   }
 
+  userLoans(){
+    return this.http.get<UsuarioPrestamos[]>(
+      'http://localhost:8080/prestamos/users'
+    )
+  }
+  changeStatus(idLoan:number,status:string): Observable<ApiResponse>{
+    return this.http.patch<ApiResponse>
+    (`http://localhost:8080/prestamos/${idLoan}/estado`,{ estado: status })
+  }
+
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     this.tokenSignal.set(null);
@@ -95,12 +107,15 @@ export class AuthService {
     }
   }
 
-  getRole(): string | null {
-    return this.getUser()?.role ?? null;
+  getRole(): string[] | null {
+    return this.getUser()?.rol ?? null; 
   }
 
   isAdmin(): boolean {
-    return this.getRole() === 'ADMIN';
+    const roles = this.getRole();
+    if (!roles) return false;
+    
+    return roles.includes('ROLE_ADMIN');
   }
 
   private saveToken(token: string): void {

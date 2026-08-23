@@ -35,3 +35,16 @@ export interface NewLoan {
   "amount":number,
   "plazo":number
 }
+
+export interface Prestamo {
+  id: number;
+  monto: number;
+  status: string;
+  plazo: number;
+}
+
+export interface UsuarioPrestamos {
+  id: number;
+  email: string;
+  prestamos: Prestamo[];
+}
